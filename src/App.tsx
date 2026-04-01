@@ -13,8 +13,30 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import NotFound from "./pages/NotFound";
+import AdminLayout from "./components/admin/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import AdminOrders from "./pages/admin/Orders";
+import AdminProducts from "./pages/admin/Products";
+import AdminCustomers from "./pages/admin/Customers";
 
 const queryClient = new QueryClient();
+
+const StorefrontLayout = () => (
+  <>
+    <Header />
+    <Routes>
+      <Route path="/" element={<Index />} />
+      <Route path="/products" element={<Products />} />
+      <Route path="/product/:id" element={<ProductDetail />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/checkout" element={<Checkout />} />
+      <Route path="/order-confirmation" element={<OrderConfirmation />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+    <BottomNav />
+    <WhatsAppButton />
+  </>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -22,18 +44,15 @@ const App = () => (
       <CartProvider>
         <Sonner />
         <BrowserRouter>
-          <Header />
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/order-confirmation" element={<OrderConfirmation />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="orders" element={<AdminOrders />} />
+              <Route path="products" element={<AdminProducts />} />
+              <Route path="customers" element={<AdminCustomers />} />
+            </Route>
+            <Route path="/*" element={<StorefrontLayout />} />
           </Routes>
-          <BottomNav />
-          <WhatsAppButton />
         </BrowserRouter>
       </CartProvider>
     </TooltipProvider>
